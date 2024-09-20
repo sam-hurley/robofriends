@@ -5,24 +5,21 @@ export default function Cardlist({ robots, searchTerm }) {
 	const [filter, setFilter] = useState([]);
 
 	useEffect(() => {
-		if (searchTerm) {
-			const filteredRobots = filter.filter((robot) => {
-				return robot.name.toLowerCase().includes(searchTerm.toLowerCase());
-			});
-			setFilter(filteredRobots);
-			return;
-		}
 		fetch("https://jsonplaceholder.typicode.com/users")
 			.then((response) => response.json())
 			.then((users) => setFilter(users));
-	}, [searchTerm]);
+	}, []);
+
+	const filteredRobots = filter.filter((robot) => {
+		return robot.name.toLowerCase().includes(searchTerm.toLowerCase());
+	});
 
 	if (!filter.length) {
 		return <h1>Loading...</h1>;
 	} else {
 		return (
 			<>
-				{filter.map((robot) => {
+				{filteredRobots.map((robot) => {
 					return (
 						<Card
 							key={robot.id}
